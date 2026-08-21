@@ -1,0 +1,35 @@
+[Unit]
+Description=ForgeMD API Server
+After=network.target
+
+[Service]
+Type=simple
+User=forgemd
+Group=forgemd
+WorkingDirectory=/srv/forgemd/app/apps/api
+
+# Source the environment variables
+EnvironmentFile=/srv/forgemd/app/.env
+
+# Pass the specific deployment storage paths based on the new architecture
+Environment=NODE_ENV=production
+Environment=STORAGE_UPLOADS=/srv/forgemd/uploads
+Environment=STORAGE_OUTPUTS=/srv/forgemd/outputs
+Environment=STORAGE_TMP=/srv/forgemd/tmp
+Environment=STORAGE_DATA=/srv/forgemd/data
+
+ExecStart=/usr/bin/node src/index.js
+
+# Restart policy for reliability
+Restart=on-failure
+RestartSec=5
+
+# Hardening
+NoNewPrivileges=yes
+PrivateTmp=yes
+ProtectSystem=full
+ProtectHome=yes
+ReadWritePaths=/srv/forgemd/uploads /srv/forgemd/outputs /srv/forgemd/tmp /srv/forgemd/data
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,40 @@
+# Environments
+.env
+.env.*
+!.env.example
+
+# Node modules
+node_modules/
+dist/
+build/
+.next/
+.cache/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+
+# Logs
+logs
+*.log
+
+# Data and Storage (to prevent uploading runtime data)
+storage/
+uploads/
+outputs/
+data/
+backups/
+tmp/
+forgemd.sqlite
+forgemd.sqlite-journal
+forgemd.sqlite-wal
+forgemd.sqlite-shm
+
+# Mac/OS
+.DS_Store
+Thumbs.db
+
+# IDEs
+.idea/
+.vscode/
+*.swp

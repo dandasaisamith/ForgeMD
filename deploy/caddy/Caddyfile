@@ -1,0 +1,37 @@
+# ==============================================================================
+# ForgeMD Caddyfile
+# ==============================================================================
+
+# This uses DuckDNS for automatic HTTPS via Let's Encrypt / ZeroSSL.
+# Before starting Caddy, ensure DUCKDNS_DOMAIN is set in the environment or 
+# replaced here.
+
+# You can pass the domain via environment variable if Caddy is started with it:
+# {$DUCKDNS_DOMAIN}.duckdns.org
+
+# Fallback to localhost if no domain is provided
+{$DUCKDNS_DOMAIN:localhost} {
+    
+    # Enable Gzip compression for better performance
+    encode gzip zstd
+
+    # Route API traffic to the backend API
+    handle /api/* {
+        reverse_proxy localhost:3000
+    }
+
+    # Since the Node.js backend serves the frontend statically on root paths 
+    # when NODE_ENV=production, we route everything else to the Node backend too.
+    handle {
+        reverse_proxy localhost:3000
+    }
+    
+    # Hardening headers
+    header {
+        Strict-Transport-Security "max-age=31536000;"
+        X-Content-Type-Options "nosniff"
+        X-Frame-Options "DENY"
+        X-XSS-Protection "1; mode=block"
+        Referrer-Policy "strict-origin-when-cross-origin"
+    }
+}

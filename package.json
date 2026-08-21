@@ -1,0 +1,19 @@
+{
+  "name": "forgemd",
+  "version": "1.0.0",
+  "description": "ForgeMD - Resource efficient local-first document converter",
+  "private": true,
+  "workspaces": [
+    "apps/*"
+  ],
+  "scripts": {
+    "dev": "concurrently \"npm run dev:api\" \"npm run dev:web\"",
+    "dev:api": "npm run dev --workspace=api",
+    "dev:web": "npm run dev --workspace=web",
+    "build": "npm run build --workspace=web",
+    "start": "npm start --workspace=api"
+  },
+  "devDependencies": {
+    "concurrently": "^10.0.5"
+  }
+}
