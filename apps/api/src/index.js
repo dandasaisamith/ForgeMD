@@ -28,23 +28,41 @@ if (isProd) {
   });
 }
 
+let server;
+
 if (process.env.NODE_ENV !== 'test') {
-  const server = app.listen(config.port, config.host, () => {
+  server = app.listen(config.port, config.host, () => {
     console.log(`ForgeMD API listening on ${config.host}:${config.port}`);
     console.log(`Storage root: ${config.storage.incoming}`);
+  });
+
+  process.on('SIGTERM', () => {
+    console.log('SIGTERM received. Shutting down gracefully...');
+    if (server) {
+      server.close(() => {
+        console.log('HTTP server closed.');
+        import('./database.js').then(dbModule => {
+          dbModule.default.close();
+          console.log('Database connection closed.');
+          process.exit(0);
+        });
+      });
+    }
+  });
+
+  process.on('SIGINT', () => {
+    console.log('SIGINT received. Shutting down gracefully...');
+    if (server) {
+      server.close(() => {
+        console.log('HTTP server closed.');
+        import('./database.js').then(dbModule => {
+          dbModule.default.close();
+          console.log('Database connection closed.');
+          process.exit(0);
+        });
+      });
+    }
   });
 }
 
 export default app;
-
-process.on('SIGTERM', () => {
-  console.log('SIGTERM received. Shutting down gracefully...');
-  server.close(() => {
-    console.log('HTTP server closed.');
-    import('./database.js').then(dbModule => {
-      dbModule.default.close();
-      console.log('Database connection closed.');
-      process.exit(0);
-    });
-  });
-});

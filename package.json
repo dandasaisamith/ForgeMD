@@ -12,7 +12,9 @@
     "dev:web": "npm run dev --workspace=web",
     "build": "npm run build --workspace=web",
     "start": "npm start --workspace=api",
-    "test": "vitest run"
+    "test": "npm run test:api && npm run test:web",
+    "test:api": "vitest run --dir apps/api --pool=forks -c apps/api/vitest.config.js",
+    "test:web": "vitest run --dir apps/web --pool=forks -c apps/web/vite.config.js"
   },
   "devDependencies": {
     "concurrently": "^10.0.5",
