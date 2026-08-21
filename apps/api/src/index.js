@@ -28,10 +28,14 @@ if (isProd) {
   });
 }
 
-const server = app.listen(config.port, config.host, () => {
-  console.log(`ForgeMD API listening on ${config.host}:${config.port}`);
-  console.log(`Storage root: ${config.storage.incoming}`);
-});
+if (process.env.NODE_ENV !== 'test') {
+  const server = app.listen(config.port, config.host, () => {
+    console.log(`ForgeMD API listening on ${config.host}:${config.port}`);
+    console.log(`Storage root: ${config.storage.incoming}`);
+  });
+}
+
+export default app;
 
 process.on('SIGTERM', () => {
   console.log('SIGTERM received. Shutting down gracefully...');

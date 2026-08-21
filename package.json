@@ -11,9 +11,11 @@
     "dev:api": "npm run dev --workspace=api",
     "dev:web": "npm run dev --workspace=web",
     "build": "npm run build --workspace=web",
-    "start": "npm start --workspace=api"
+    "start": "npm start --workspace=api",
+    "test": "vitest run"
   },
   "devDependencies": {
-    "concurrently": "^10.0.5"
+    "concurrently": "^10.0.5",
+    "vitest": "^4.1.11"
   }
 }
